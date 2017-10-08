@@ -103,7 +103,20 @@ set(handles.btnTranslate, 'Enable', 'on');
 [x1,y1,z1] = size(handles.Image);
 set(handles.txtwidth ,'string',y1);
 set(handles.txthight ,'string',x1);
+Red = handles.Image(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes3);
+plot(x, yRed, 'Red');
 
+Green = handles.Image(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes4);
+plot(x, yRed, 'Green');
+
+Blue = handles.Image(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes5);
+plot(x, yRed, 'Blue');
 % Save the handles structure.
 guidata(hObject, handles);
 
@@ -170,7 +183,20 @@ guidata(hObject, handles);
 % Set current drawing axes to "axes2"
 axes(handles.axes2);
 imshow(handles.Result);
+Red = handles.Result(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes3);
+plot(x, yRed, 'Red');
 
+Green = handles.Result(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes4);
+plot(x, yRed, 'Green');
+
+Blue = handles.Result(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes5);
+plot(x, yRed, 'Blue');
 
 
 function txtOffset_Callback(hObject, eventdata, handles)
