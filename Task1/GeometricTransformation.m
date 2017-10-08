@@ -3,6 +3,7 @@ function result = GeometricTransformation(image, NewWidth, NewHight, RotateAngle
 
 % Create new buffer
 %scale matrix
+RotateAngle = degtorad(RotateAngle);
 NewWidth =NewWidth/W;
 NewHight=NewHight/H;
 Scalematrix=[NewWidth 0 0; 0 NewHight 0; 0 0 1 ];

@@ -88,7 +88,6 @@ function btnOpenImage_Callback(hObject, eventdata, handles)
 % hObject    handle to btnOpenImage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
 % Open the image and save it in the "handles" struct
 handles.Image = imread('jaguar.bmp');
 % Set current drawing axes to "axes1"
@@ -101,6 +100,9 @@ set(handles.btnApply, 'Enable', 'on');
 set(handles.btnBrightness, 'Enable', 'on');
 set(handles.btnDisplayChannel, 'Enable', 'on');
 set(handles.btnTranslate, 'Enable', 'on');
+[x1,y1,z1] = size(handles.Image);
+set(handles.txtwidth ,'string',x1);
+set(handles.txthight ,'string',y1);
 
 % Save the handles structure.
 guidata(hObject, handles);
