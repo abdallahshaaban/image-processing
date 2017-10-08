@@ -101,8 +101,8 @@ set(handles.btnBrightness, 'Enable', 'on');
 set(handles.btnDisplayChannel, 'Enable', 'on');
 set(handles.btnTranslate, 'Enable', 'on');
 [x1,y1,z1] = size(handles.Image);
-set(handles.txtwidth ,'string',x1);
-set(handles.txthight ,'string',y1);
+set(handles.txtwidth ,'string',y1);
+set(handles.txthight ,'string',x1);
 
 % Save the handles structure.
 guidata(hObject, handles);
