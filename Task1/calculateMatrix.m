@@ -6,7 +6,7 @@ function result = calculateMatrix( scaleOnX, scaleOnY, RotateAngle , ShearOnX,Sh
 RotateAngle = degtorad(RotateAngle);
 %scaleOnX =scaleOnX/W;
 %scaleOnY=scaleOnY/H;
-Scalematrix=[scaleOnX 0 0; 0 scaleOnY 0; 0 0 1 ];
+Scalematrix=[scaleOnY 0 0; 0 scaleOnX 0; 0 0 1 ];
 Rotatematrix=[cos(RotateAngle) -sin(RotateAngle) 0;sin(RotateAngle) cos(RotateAngle) 0; 0 0 1];
 %Rotatematrix=[1 0 0 ; 0 cos(RotateAngle) -sin(RotateAngle) ;0 sin(RotateAngle) cos(RotateAngle)];
 

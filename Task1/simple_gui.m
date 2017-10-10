@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 10-Oct-2017 12:54:36
+% Last Modified by GUIDE v2.5 10-Oct-2017 17:06:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -89,7 +89,8 @@ function btnOpenImage_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Open the image and save it in the "handles" struct
-handles.Image = imread('jaguar.bmp');
+ImageName = get(handles.txtOpenImage , 'string')
+handles.Image = imread(char(ImageName));
 % Set current drawing axes to "axes1"
 axes(handles.axes1);
 % Display the image
@@ -117,6 +118,11 @@ Blue = handles.Image(:,:,3);
 [yRed, x] = imhist(Blue);
 axes(handles.axes5);
 plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Image );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes6);
+plot(x, yRed, 'Black');
 % Save the handles structure.
 guidata(hObject, handles);
 
@@ -176,7 +182,6 @@ offset = str2num(txtVal) ;
 
 % Call the function
 handles.Result = Brightness(handles.Image,handles.SelectedChannel, offset);
-
 % Save the handles structure.
 guidata(hObject, handles);
 
@@ -197,6 +202,11 @@ Blue = handles.Result(:,:,3);
 [yRed, x] = imhist(Blue);
 axes(handles.axes5);
 plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Result );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes6);
+plot(x, yRed, 'Black');
 
 
 function txtOffset_Callback(hObject, eventdata, handles)
@@ -492,6 +502,120 @@ function txtscaleOnY_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function txtscaleOnY_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to txtscaleOnY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtOpenImage_Callback(hObject, eventdata, handles)
+% hObject    handle to txtOpenImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtOpenImage as text
+%        str2double(get(hObject,'String')) returns contents of txtOpenImage as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtOpenImage_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtOpenImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in btnNot.
+function btnNot_Callback(hObject, eventdata, handles)
+% Call the function
+handles.Result = Not(handles.Image);
+
+% Save the handles structure.
+guidata(hObject, handles);
+
+% Set current drawing axes to "axes2"
+axes(handles.axes2);
+imshow(handles.Result);
+%Histograms
+Red = handles.Result(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes3);
+plot(x, yRed, 'Red');
+
+Green = handles.Result(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes4);
+plot(x, yRed, 'Green');
+
+Blue = handles.Result(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes5);
+plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Result );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes6);
+plot(x, yRed, 'Black');
+
+
+% --- Executes on button press in btnGamma.
+function btnGamma_Callback(hObject, eventdata, handles)
+txtVal = get(handles.txtGamma, 'String');
+GammaVal = str2num(txtVal) ;
+
+% Call the function
+handles.Result = Gamma(handles.Image,GammaVal);
+% Save the handles structure.
+guidata(hObject, handles);
+
+% Set current drawing axes to "axes2"
+axes(handles.axes2);
+imshow(handles.Result);
+%Hitograms
+Red = handles.Result(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes3);
+plot(x, yRed, 'Red');
+
+Green = handles.Result(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes4);
+plot(x, yRed, 'Green');
+
+Blue = handles.Result(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes5);
+plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Result );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes6);
+plot(x, yRed, 'Black');
+
+
+
+function txtGamma_Callback(hObject, eventdata, handles)
+% hObject    handle to txtGamma (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtGamma as text
+%        str2double(get(hObject,'String')) returns contents of txtGamma as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtGamma_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtGamma (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
