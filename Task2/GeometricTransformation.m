@@ -1,14 +1,6 @@
-function result = GeometricTransformation(image, NewWidth, NewHight, RotateAngle , ShearOnX,ShearOnY)
+function result = GeometricTransformation(image, Ww)
 [H W L] = size(image) ;
 
-% Create new buffer
-%scale matrix
-NewWidth =NewWidth/W;
-NewHight=NewHight/H;
-Scalematrix=[NewWidth 0 0; 0 NewHight 0; 0 0 1 ];
-Rotatematrix=[1 0 0 ; 0 cos(RotateAngle) -sin(RotateAngle) ;0 sin(RotateAngle) cos(RotateAngle)];
-Shear=[1 ShearOnX 0; ShearOnY 1 0; 0 0 1];
-Ww=Shear*Scalematrix*Rotatematrix
 
 A=[1 1 1]*Ww;
 B=[1 W 1]*Ww;

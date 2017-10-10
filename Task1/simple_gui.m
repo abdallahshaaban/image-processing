@@ -18,11 +18,11 @@ function varargout = simple_gui(varargin)
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
-% See also: GUIDE, GUIDATA, GUIHANDLES
+% See also: GUIDE, GUIDATA, GUIHANDLESz
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 03-Oct-2017 13:06:47
+% Last Modified by GUIDE v2.5 10-Oct-2017 12:54:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -319,10 +319,10 @@ function btnApplyMatrix_Callback(hObject, eventdata, handles)
 % hObject    handle to btnApplyMatrix (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-txtwidthVal = get(handles.txtwidth, 'String');
-width = str2num(txtwidthVal) ;
-txthightVal = get(handles.txthight, 'String');
-hight = str2num(txthightVal) ;
+txtscaleOnXVal = get(handles.txtscaleOnX, 'String');
+scaleOnX = str2num(txtscaleOnXVal) ;
+txtscaleOnYVal = get(handles.txtscaleOnY, 'String');
+scaleOnY = str2num(txtscaleOnYVal) ;
 
 txtrotateVal = get(handles.txtrotate, 'String');
 rotate = str2num(txtrotateVal) ;
@@ -332,8 +332,8 @@ shx = str2num(txtshxVal) ;
 
 txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
-
-handles.Result = GeometricTransformation(handles.Image,width, hight,rotate,shx,shy);
+Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
+handles.Result = GeometricTransformation(handles.Image,Matrix);
 
 % Save the handles structure.
 guidata(hObject, handles);
@@ -446,6 +446,52 @@ function txtshy_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function txtshy_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to txtshy (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtscaleOnX_Callback(hObject, eventdata, handles)
+% hObject    handle to txtscaleOnX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtscaleOnX as text
+%        str2double(get(hObject,'String')) returns contents of txtscaleOnX as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtscaleOnX_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtscaleOnX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtscaleOnY_Callback(hObject, eventdata, handles)
+% hObject    handle to txtscaleOnY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtscaleOnY as text
+%        str2double(get(hObject,'String')) returns contents of txtscaleOnY as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtscaleOnY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtscaleOnY (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
