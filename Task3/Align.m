@@ -12,7 +12,7 @@ Q = [1 Dw 1 Dw; 1 1 HW HW; 1 1 1 1];
 [H W L] = size(Image);
 
 
-
+%detecting the markers
 for row=1:H
     for col=1:W
         if(Image(row, col, 2) == 0 && Image(row, col, 3) == 0 && Image(row, col, 1) == 224)
