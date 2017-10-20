@@ -34,25 +34,3 @@ for	y=1:H
         result(Q(1,2) +1, Q(1, 1)+1 , :)=image(y ,x,:);
 	end
 end
-%Apply the reverse mapping
-Ww(1, 3) = T(1, 1);
-Ww(2, 3) = T(1, 2);
-Ww(3, 3) = 1;
-
-Winv = inv(Ww);
-
-[h w l] = size(result);
-
-for	y=1:h
-	for x=1:w        
-        Q=[x y 1] * Winv;
-        Q=round(Q);
-        oldX = Q(1,1)+1;
-        oldY = Q(1, 2)+1;
-        if(1<=oldX && oldX<=W && 1<=oldY && oldY<=H)
-            result(y, x, :)=image(oldY, oldX,:);
-        else
-            result(y, x, :)=[0 0 0];
-        end
-	end
-end
