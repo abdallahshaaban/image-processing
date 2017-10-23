@@ -40,6 +40,38 @@ for y=1 : loopy
     end
 end
 Endpoints=result1;
+[H W] = size(Endpoints);
+%VisitedBefore = int16.empty(0,2);
+ShortRidges = int16.empty(0,4);
+for y=2:H
+    PrevI = Endpoints(y,1);
+    PrevJ = Endpoints(y,2);
+    CurrI = Endpoints(y,1);
+    CurrJ = Endpoints(y,2);
+    Len = 0;
+    if ~IsVisitedBefore(ShortRidges , [CurrI CurrJ])
+        while Len<=RidgeLen
+            [NextCoordinates C]= GetNextCoordinates(InputImage , [CurrI CurrJ] , [PrevI PrevJ]);
+            if(C>1)
+                break;
+            end
+            if(C==0)
+                ShortRidges = [ShortRidges;Endpoints(y,1) Endpoints(y,2) CurrI CurrJ];
+                break;
+            end
+            NextI = NextCoordinates(1,1);
+            NextJ = NextCoordinates(1,2);
+            PrevI = CurrI;
+            PrevJ = CurrJ; 
+            CurrI = NextI;
+            CurrJ = NextJ;
+            Len = Len+1;
+        end
+    end
+end
+end
+    
+
 
 
 

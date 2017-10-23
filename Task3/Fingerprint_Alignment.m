@@ -91,20 +91,44 @@ function btnExtractLandmarks_Callback(hObject, eventdata, handles)
 % hObject    handle to btnExtractLandmarks (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+txtVal = get(handles.txtShortEdge, 'String');
+Length = str2num(txtVal);
 [H W L] = size(handles.Image) 
- [Endpoints,ShortEdges]=ExtractLandmarks(handles.Image, 2); 
+ [Endpoints,ShortEdges]=ExtractLandmarks(handles.Image, Length); 
  Img=cat(3,handles.Image,handles.Image,handles.Image);
  
  [H W L] = size(Endpoints) 
  for y=2 : H
      N=Endpoints(y,1);
      M=Endpoints(y,2);
-     Img(N:5,M:5,1)=255;
-     Img(N:N+5,M:M+5,2)=0;
-     Img(N:N+5,M:M+5,3)=0;
-  
+     Img(N:2,M:2,1)=255;
+     Img(N:N+2,M:M+2,2)=0;
+     Img(N:N+2,M:M+2,3)=0;
  end
-
+[H W] = size(ShortEdges);
+for i=1:H
+    PrevI = ShortEdges(i,1);
+    PrevJ = ShortEdges(i,2);
+    CurrI = ShortEdges(i,1);
+    CurrJ = ShortEdges(i,2);
+    NextI = ShortEdges(i,1);
+    NextJ = ShortEdges(i,2);
+    Img(CurrI:CurrI+1,CurrJ:CurrJ+1,1) = 0;
+    Img(CurrI:CurrI+1,CurrJ:CurrJ+1,2) = 0;
+    Img(CurrI:1,CurrJ:1,3) = 255;
+    while ~(NextI == ShortEdges(i,3) && NextJ == ShortEdges(i,4))
+        [NextCoordinates C] = GetNextCoordinates(handles.Image , [CurrI CurrJ] , [PrevI PrevJ]);
+        NextI = NextCoordinates(1,1);
+        NextJ = NextCoordinates(1,2);
+        Img(NextI:NextI+1,NextJ:NextJ+1,1) = 0;
+        Img(NextI:NextI+1,NextJ:NextJ+1,2) = 0;
+        Img(NextI:1,NextJ:1,3) = 255;
+        PrevI = CurrI;
+        PrevJ = CurrJ; 
+        CurrI = NextI;
+        CurrJ = NextJ;
+    end
+end
  
 handles.Result=Img;
 axes(handles.axes2);
