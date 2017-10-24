@@ -1,5 +1,5 @@
 function [Result C]= GetNextCoordinates(InputImage , CurrCoordinates , PrevCoordinates)
-[H W] = size(InputImage);
+[H W L] = size(InputImage);
 i = CurrCoordinates(1,1);
 j = CurrCoordinates(1,2);
 pi = PrevCoordinates(1,1);

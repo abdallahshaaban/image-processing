@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 24-Oct-2017 12:59:40
+% Last Modified by GUIDE v2.5 24-Oct-2017 21:46:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -768,3 +768,39 @@ imshow(handles.Result);
 
 % Save the handles structure.
 guidata(hObject, handles);
+
+
+% --- Executes on button press in btnBorder.
+function btnBorder_Callback(hObject, eventdata, handles)
+ImageName = get(handles.txtborder , 'string')
+Border = imread(char(ImageName));
+[H W L] = size(handles.Image);
+Border = imresize(Border,[H W]);
+%Border = ImageThresholding(Border);
+handles.Result = ApplyBorder(handles.Image , Border);
+axes(handles.axes2);
+imshow(handles.Result);
+% Save the handles structure.
+guidata(hObject, handles);
+
+
+function txtborder_Callback(hObject, eventdata, handles)
+% hObject    handle to txtborder (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtborder as text
+%        str2double(get(hObject,'String')) returns contents of txtborder as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtborder_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtborder (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

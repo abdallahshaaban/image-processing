@@ -40,7 +40,7 @@ for y=1 : loopy
     end
 end
 Endpoints=result1;
-[H W] = size(Endpoints);
+[H W L] = size(Endpoints);
 %VisitedBefore = int16.empty(0,2);
 ShortRidges = int16.empty(0,4);
 for y=2:H

@@ -22,7 +22,7 @@ function varargout = Fingerprint_Alignment(varargin)
 
 % Edit the above text to modify the response to help Fingerprint_Alignment
 
-% Last Modified by GUIDE v2.5 22-Oct-2017 14:49:06
+% Last Modified by GUIDE v2.5 24-Oct-2017 23:13:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -105,7 +105,7 @@ Length = str2num(txtVal);
      Img(N:N+2,M:M+2,2)=0;
      Img(N:N+2,M:M+2,3)=0;
  end
-[H W] = size(ShortEdges);
+[H W L] = size(ShortEdges);
 for i=1:H
     PrevI = ShortEdges(i,1);
     PrevJ = ShortEdges(i,2);
