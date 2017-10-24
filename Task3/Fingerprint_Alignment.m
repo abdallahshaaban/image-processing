@@ -22,7 +22,7 @@ function varargout = Fingerprint_Alignment(varargin)
 
 % Edit the above text to modify the response to help Fingerprint_Alignment
 
-% Last Modified by GUIDE v2.5 24-Oct-2017 23:13:56
+% Last Modified by GUIDE v2.5 25-Oct-2017 00:02:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -105,7 +105,7 @@ Length = str2num(txtVal);
      Img(N:N+2,M:M+2,2)=0;
      Img(N:N+2,M:M+2,3)=0;
  end
-[H W L] = size(ShortEdges);
+[H W] = size(ShortEdges);
 for i=1:H
     PrevI = ShortEdges(i,1);
     PrevJ = ShortEdges(i,2);
@@ -182,3 +182,65 @@ function txtOpenImage_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function txtWidth_Callback(hObject, eventdata, handles)
+% hObject    handle to txtWidth (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtWidth as text
+%        str2double(get(hObject,'String')) returns contents of txtWidth as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtWidth_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtWidth (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtHeight_Callback(hObject, eventdata, handles)
+% hObject    handle to txtHeight (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtHeight as text
+%        str2double(get(hObject,'String')) returns contents of txtHeight as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtHeight_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtHeight (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in btnApply.
+function btnApply_Callback(hObject, eventdata, handles)
+% hObject    handle to btnApply (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+txtWidth = get(handles.txtWidth, 'String');
+width = str2num(txtWidth);
+txtHeight = get(handles.txtHeight, 'String');
+height = str2num(txtHeight);
+[handles.Result, Q] = Align(handles.Image, width, height);
+axes(handles.axes2);
+imshow(handles.Result);
+% Save the handles structure.
+guidata(hObject, handles);
