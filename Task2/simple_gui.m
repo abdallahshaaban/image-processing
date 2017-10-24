@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 22-Oct-2017 11:14:18
+% Last Modified by GUIDE v2.5 24-Oct-2017 12:59:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -144,6 +144,26 @@ handles.Result = GetImageChannel(handles.Image, handles.SelectedChannel);
 axes(handles.axes2);
 imshow(handles.Result);
 
+
+Red = handles.Result(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes7);
+plot(x, yRed, 'Red');
+
+Green = handles.Result(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes8);
+plot(x, yRed, 'Green');
+
+Blue = handles.Result(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes9);
+plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Result );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes10);
+plot(x, yRed, 'Black');
 % Save the handles structure.
 guidata(hObject, handles);
 
@@ -161,7 +181,6 @@ handles.SelectedChannel = str{val};
 
 % Save the handles structure.
 guidata(hObject, handles);
-
 
 % --- Executes during object creation, after setting all properties.
 function figure1_CreateFcn(hObject, eventdata, handles)
@@ -190,22 +209,22 @@ axes(handles.axes2);
 imshow(handles.Result);
 Red = handles.Result(:,:,1);
 [yRed, x] = imhist(Red);
-axes(handles.axes3);
+axes(handles.axes7);
 plot(x, yRed, 'Red');
 
 Green = handles.Result(:,:,2);
 [yRed, x] = imhist(Green);
-axes(handles.axes4);
+axes(handles.axes8);
 plot(x, yRed, 'Green');
 
 Blue = handles.Result(:,:,3);
 [yRed, x] = imhist(Blue);
-axes(handles.axes5);
+axes(handles.axes9);
 plot(x, yRed, 'Blue');
 
 GrayLevel = GetGrayLevelImage( handles.Result );
 [yRed, x] = imhist(GrayLevel);
-axes(handles.axes6);
+axes(handles.axes10);
 plot(x, yRed, 'Black');
 
 
@@ -343,7 +362,8 @@ shx = str2num(txtshxVal) ;
 txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
 Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
-handles.Result = GTReverseMapping(handles.Image,Matrix);
+handles.Result = GeometricTransformation(handles.Image,Matrix);
+%handles.Result = GTReverseMapping(handles.Image,Matrix);
 
 % Save the handles structure.
 guidata(hObject, handles);
@@ -549,24 +569,23 @@ imshow(handles.Result);
 %Histograms
 Red = handles.Result(:,:,1);
 [yRed, x] = imhist(Red);
-axes(handles.axes3);
+axes(handles.axes7);
 plot(x, yRed, 'Red');
 
 Green = handles.Result(:,:,2);
 [yRed, x] = imhist(Green);
-axes(handles.axes4);
+axes(handles.axes8);
 plot(x, yRed, 'Green');
 
 Blue = handles.Result(:,:,3);
 [yRed, x] = imhist(Blue);
-axes(handles.axes5);
+axes(handles.axes9);
 plot(x, yRed, 'Blue');
 
 GrayLevel = GetGrayLevelImage( handles.Result );
 [yRed, x] = imhist(GrayLevel);
-axes(handles.axes6);
+axes(handles.axes10);
 plot(x, yRed, 'Black');
-
 
 % --- Executes on button press in btnGamma.
 function btnGamma_Callback(hObject, eventdata, handles)
@@ -584,22 +603,22 @@ imshow(handles.Result);
 %Hitograms
 Red = handles.Result(:,:,1);
 [yRed, x] = imhist(Red);
-axes(handles.axes3);
+axes(handles.axes7);
 plot(x, yRed, 'Red');
 
 Green = handles.Result(:,:,2);
 [yRed, x] = imhist(Green);
-axes(handles.axes4);
+axes(handles.axes8);
 plot(x, yRed, 'Green');
 
 Blue = handles.Result(:,:,3);
 [yRed, x] = imhist(Blue);
-axes(handles.axes5);
+axes(handles.axes9);
 plot(x, yRed, 'Blue');
 
 GrayLevel = GetGrayLevelImage( handles.Result );
 [yRed, x] = imhist(GrayLevel);
-axes(handles.axes6);
+axes(handles.axes10);
 plot(x, yRed, 'Black');
 
 
@@ -626,53 +645,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in btnadd.
-function btnadd_Callback(hObject, eventdata, handles)
-SecondImageName = get(handles.txtadd, 'String');
-SecondImage = imread(char(SecondImageName));
-% Call the function
-handles.Result = AddTwoImages(handles.Image,SecondImage);
-% Save the handles structure.
-guidata(hObject, handles);
 
-% Set current drawing axes to "axes2"
-axes(handles.axes2);
-imshow(handles.Result);
-%Hitograms
-Red = handles.Result(:,:,1);
-[yRed, x] = imhist(Red);
-axes(handles.axes3);
-plot(x, yRed, 'Red');
-
-Green = handles.Result(:,:,2);
-[yRed, x] = imhist(Green);
-axes(handles.axes4);
-plot(x, yRed, 'Green');
-
-Blue = handles.Result(:,:,3);
-[yRed, x] = imhist(Blue);
-axes(handles.axes5);
-plot(x, yRed, 'Blue');
-
-GrayLevel = GetGrayLevelImage( handles.Result );
-[yRed, x] = imhist(GrayLevel);
-axes(handles.axes6);
-plot(x, yRed, 'Black');
-
-
-
-function txtadd_Callback(hObject, eventdata, handles)
-% hObject    handle to txtadd (see GCBO)
+function txtStartRange_Callback(hObject, eventdata, handles)
+% hObject    handle to txtStartRange (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of txtadd as text
-%        str2double(get(hObject,'String')) returns contents of txtadd as a double
+% Hints: get(hObject,'String') returns contents of txtStartRange as text
+%        str2double(get(hObject,'String')) returns contents of txtStartRange as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function txtadd_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to txtadd (see GCBO)
+function txtStartRange_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtStartRange (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -681,3 +666,105 @@ function txtadd_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function txtEndRange_Callback(hObject, eventdata, handles)
+% hObject    handle to txtEndRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtEndRange as text
+%        str2double(get(hObject,'String')) returns contents of txtEndRange as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtEndRange_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtEndRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtValue_Callback(hObject, eventdata, handles)
+% hObject    handle to txtValue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtValue as text
+%        str2double(get(hObject,'String')) returns contents of txtValue as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtValue_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtValue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtOption_Callback(hObject, eventdata, handles)
+% hObject    handle to txtOption (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtOption as text
+%        str2double(get(hObject,'String')) returns contents of txtOption as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtOption_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtOption (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in btnApplyIntensity.
+function btnApplyIntensity_Callback(hObject, eventdata, handles)
+% hObject    handle to btnApplyIntensity (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+txtStartRange = get(handles.txtStartRange, 'String');
+A = str2num(txtStartRange);
+
+txtEndRange = get(handles.txtEndRange, 'String');
+B = str2num(txtEndRange);
+
+txtValue = get(handles.txtValue, 'String');
+V = str2num(txtValue);
+
+txtOption = get(handles.txtOption, 'String');
+O = str2num(txtOption);
+
+gray_img = rgb2gray(handles.Image);
+
+if(O == 0)
+    handles.Result = Intensity_Level_Slicing(gray_img, A, B, V);
+else
+    handles.Result = Intensity_Level_Slicing_2(gray_img, A, B, V);
+end
+axes(handles.axes2);
+imshow(handles.Result);
+
+
+
+% Save the handles structure.
+guidata(hObject, handles);
