@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 10-Oct-2017 17:06:36
+% Last Modified by GUIDE v2.5 24-Oct-2017 11:58:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -344,6 +344,7 @@ txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
 Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
 handles.Result = GeometricTransformation(handles.Image,Matrix);
+%handles.Result = GTReverseMapping(handles.Image,Matrix);
 
 % Save the handles structure.
 guidata(hObject, handles);
@@ -624,3 +625,126 @@ function txtGamma_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function txtStartRange_Callback(hObject, eventdata, handles)
+% hObject    handle to txtStartRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtStartRange as text
+%        str2double(get(hObject,'String')) returns contents of txtStartRange as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtStartRange_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtStartRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtEndRange_Callback(hObject, eventdata, handles)
+% hObject    handle to txtEndRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtEndRange as text
+%        str2double(get(hObject,'String')) returns contents of txtEndRange as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtEndRange_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtEndRange (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtValue_Callback(hObject, eventdata, handles)
+% hObject    handle to txtValue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtValue as text
+%        str2double(get(hObject,'String')) returns contents of txtValue as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtValue_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtValue (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function txtOption_Callback(hObject, eventdata, handles)
+% hObject    handle to txtOption (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtOption as text
+%        str2double(get(hObject,'String')) returns contents of txtOption as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtOption_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtOption (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in btnApplyIntensity.
+function btnApplyIntensity_Callback(hObject, eventdata, handles)
+% hObject    handle to btnApplyIntensity (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+txtStartRange = get(handles.txtStartRange, 'String');
+A = str2num(txtStartRange);
+
+txtEndRange = get(handles.txtEndRange, 'String');
+B = str2num(txtEndRange);
+
+txtValue = get(handles.txtValue, 'String');
+V = str2num(txtValue);
+
+txtOption = get(handles.txtOption, 'String');
+O = str2num(txtOption);
+
+gray_img = rgb2gray(handles.Image);
+
+if(O == 0)
+    handles.Result = Intensity_Level_Slicing(gray_img, A, B, V);
+else
+    handles.Result = Intensity_Level_Slicing_2(gray_img, A, B, V);
+end
+axes(handles.axes2);
+imshow(handles.Result);
+
+% Save the handles structure.
+guidata(hObject, handles);
