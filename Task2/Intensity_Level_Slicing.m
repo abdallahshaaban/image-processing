@@ -7,7 +7,7 @@ result = uint8(zeros(H, W, L));
 
 for row=1:H
     for col=1:W
-        if(Image(row, col) >= A && Image(row, col) <= col)
+        if(Image(row, col) >= A && Image(row, col) <= B)
             result(row, col) = Image(row, col)+value;
         else
             result(row, col) = Image(row, col);
