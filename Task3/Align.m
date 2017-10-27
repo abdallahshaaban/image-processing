@@ -27,24 +27,27 @@ for row=1:H
 end
 
 %calculating the transformation matrix
+
 WW =( Q * P.') * inv(P * P.');
+
+Newcorners =  WW * P ;
 
 result = uint8(ones(round(HW)+5,round(Dw)+5, 3)) * 255;
 
-for	row=1:H
-	for col=1:W
-        Q= WW * [row;col;1];
+for	row=1:HW
+	for col=1:Dw
+        Q= inv(WW) * [row;col;1];
         Q=round(Q);
-        oldX = Q(1,1)+1;
-        oldY = Q(2,1)+1;
-        if(1<=oldX && oldX<=HW && 1<=oldY && oldY<=Dw)
-            result(oldX,oldY,:)=Image(row,col,:);
+        oldX = Q(1,1);
+        oldY = Q(2,1);
+        if(1<=oldX && oldX<=H && 1<=oldY && oldY<=W)
+            result(row,col,:)=Image(oldX,oldY,:);
         
         end
 	end
 end
 
-AlignedImage = result ;
+AlignedImage = result;
 Corners = P ;
 
 end
