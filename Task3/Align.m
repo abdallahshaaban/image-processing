@@ -12,43 +12,42 @@ Q = [1 1 HW HW;
 
 [H W L] = size(Image);
 
+background = Image(1,1,:);
+
+Minr = 10000;
+Maxr = -1 ;
+Minc = 10000;
+Maxc = -1 ;
+
 for row=1:H
     for col=1:W
-        if(Image(row, col, 2) == 0 && Image(row, col, 3) == 0 && Image(row, col, 1) == 224)
-            P(:, 2) = [row;col;1];
-        elseif(Image(row, col, 1) == 0 && Image(row, col, 2) == 0 && Image(row, col, 3) >= 200)
-            P(:, 4) = [row;col;1];
-        elseif(Image(row, col, 1) == 0 && Image(row, col, 3) == 0 && Image(row, col, 2) >= 200)
-            P(:, 3) = [row;col;1];
-        elseif(Image(row, col, 3) == 0 && Image(row, col, 2) == 0 && Image(row, col, 1) == 243)
-            P(:, 1) = [row;col;1];
+        if(Image(row,col,:)== background)
+            continue ;
         end
+        if(row < Minr)
+             Minr =row ;
+             P(:, 2) = [row;col;1];
+        end  
+         if(row>Maxr)
+             Maxr=row;
+             P(:, 3) = [row;col;1];
+             
+         end
+             
+         if(col<Minc)
+             Minc = col ;
+              P(:, 1) = [row;col;1];
+         end
+             
+          if(col>Maxc)
+             Maxc = col ;
+             P(:,4) = [row;col;1];
+          end
     end
 end
 
-%calculating the transformation matrix
-
-WW =( Q * P.') * inv(P * P.');
-
-Newcorners =  WW * P ;
-
-result = uint8(ones(round(HW)+5,round(Dw)+5, 3)) * 255;
-
-for	row=1:HW
-	for col=1:Dw
-        Q= inv(WW) * [row;col;1];
-        Q=round(Q);
-        oldX = Q(1,1);
-        oldY = Q(2,1);
-        if(1<=oldX && oldX<=H && 1<=oldY && oldY<=W)
-            result(row,col,:)=Image(oldX,oldY,:);
-        
-        end
-	end
-end
-
-AlignedImage = result;
-Corners = P ;
+AlignedImage = Warp(Image,P,Q);
+Corners = P;
 
 end
 

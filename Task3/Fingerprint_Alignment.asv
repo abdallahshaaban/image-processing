@@ -22,7 +22,7 @@ function varargout = Fingerprint_Alignment(varargin)
 
 % Edit the above text to modify the response to help Fingerprint_Alignment
 
-% Last Modified by GUIDE v2.5 28-Oct-2017 01:56:05
+% Last Modified by GUIDE v2.5 27-Oct-2017 22:17:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -76,7 +76,7 @@ varargout{1} = handles.output;
 % --- Executes on button press in btnOpenImage.
 function btnOpenImage_Callback(hObject, eventdata, handles)
 
-handles.Image = imread('axis.jpg');
+handles.Image = imread('W.jpg');
 axes(handles.axes2);
 imshow(handles.Image);
 
@@ -87,9 +87,7 @@ imshow(handles.Image);
 
 
 guidata(hObject, handles);
-set(handles.lblx ,'string','x loc');
-set(handles.lbly ,'string','y loc');
-set(handles.Num ,'string',0);
+
 
 
 global cnt
@@ -270,19 +268,14 @@ Cp = get(gca,'currentpoint');
 col = round(Cp(1,1))+1;
 row = round(Cp(1,2))+1;
 points(:,cnt(1))= [row;col;1];
-set(handles.lblx ,'string',row);
-set(handles.lbly ,'string',col);
-set(handles.Num ,'string',cnt);
 cnt = cnt + 1;
 disp(points);
-if(cnt==9)
-    handles.Result= Warp(handles.Image , points(:,1:4) , points(:,5:8));
-    axes(handles.axes2);
-    imshow(handles.Result);
-    guidata(hObject, handles);
-end
+if(cnt==8)
+    Warp(handles.Image , points(:,1:4) , points(:,5:8));
+ 
     
 
 
 % --- Executes on mouse press over axes background.
 function axes1_ButtonDownFcn(hObject, eventdata, handles)
+
