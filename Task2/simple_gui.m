@@ -362,7 +362,7 @@ shx = str2num(txtshxVal) ;
 txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
 Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
-handles.Result = GeometricTransformation(handles.Image,Matrix);
+handles.Result = GTReverseMapping(handles.Image,Matrix);
 %handles.Result = GTReverseMapping(handles.Image,Matrix);
 
 % Save the handles structure.
