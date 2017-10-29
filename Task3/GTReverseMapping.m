@@ -1,45 +1,26 @@
-function result = GTReverseMapping(image, Ww)
-[H W L] = size(image);
-
-A=[1 1 1]*Ww;
-B=[W 1 1]*Ww;
-C=[1 H 1]*Ww;
-D=[W H 1]*Ww;
-
-
-maxx=max(max(A(1,1),D(1,1)),max(B(1,1),C(1,1)));
-
-minx=min(min(A(1,1),D(1,1)),min(B(1,1),C(1,1)));
-
-NewW=maxx-minx;
-
-maxy=max(max(A(1,2),D(1,2)),max(B(1,2),C(1,2)));
-
-miny=min(min(A(1,2),D(1,2)),min(B(1,2),C(1,2)));
-
-NewH=maxy-miny;
-result = uint8(zeros(round(NewH, 0),round(NewW, 0), L));
-T = [- round(minx), - round(miny),0] ;
-
-%Apply the reverse mapping
-Winv = inv(Ww);
-
-Winv(1, 3) = T(1, 1);
-Winv(2, 3) = T(1, 2);
-Winv(3, 3) = 1;
-
-[h w l] = size(result);
-
-for	y=1:h
-	for x=1:w        
-        Q = Winv * [x; y; 1];
-        Q = round(Q);
-        oldX = Q(1,1);
-        oldY = Q(2, 1);
-        if(1<=oldX && oldX<=W && 1<=oldY && oldY<=H)
-            result(y, x, :)=image(oldY, oldX,:);
-        else
-            result(y, x, :)=[0 0 0];
+function result = GTReverseMapping( Image , M )
+[H W L] = size(Image) ;
+RightUpCorner = round(M * [1;W;1]);
+leftUpCorner = round(M * [1;1;1]);
+LeftDownCorner = round(M * [H;1;1]);
+RightDownCorner = round(M * [H;W;1]);
+MinX = min([RightUpCorner(2,1) leftUpCorner(2,1) LeftDownCorner(2,1) RightDownCorner(2,1)]);
+MaxX = max([RightUpCorner(2,1) leftUpCorner(2,1) LeftDownCorner(2,1) RightDownCorner(2,1)]);
+MinY = min([RightUpCorner(1,1) leftUpCorner(1,1) LeftDownCorner(1,1) RightDownCorner(1,1)]);
+MaxY = max([RightUpCorner(1,1) leftUpCorner(1,1) LeftDownCorner(1,1) RightDownCorner(1,1)]);
+NewH = abs(MaxY - MinY);
+NewW = abs(MaxX - MinX);
+result = uint8(zeros(NewH, NewW, L));
+M(1,3)=-MinY;
+M(2,3)=-MinX;
+M(3,3) = 1;
+M=inv(M);
+for i=1:NewH
+    for j=1:NewW
+        NewPoint = round(M * [i;j;1]);
+        if(NewPoint(1,1)<=H && NewPoint(1,1)>=1 && NewPoint(2,1)<=W && NewPoint(2,1)>=1)
+                result(i , j , :) = Image(NewPoint(1,1),NewPoint(2,1),:);
         end
-	end
+    end
+end
 end
