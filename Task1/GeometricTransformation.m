@@ -1,32 +1,22 @@
-function result = GeometricTransformation(image,Ww)
-[H W L] = size(image) ;
-
-A=[1 1 1]*Ww;
-B=[1 W 1]*Ww;
-C=[H 1 1]*Ww;
-D=[H W 1]*Ww;
-
-maxx=max(max(A(1,1),D(1,1)),max(B(1,1),C(1,1)));
-
-minx=min(min(A(1,1),D(1,1)),min(B(1,1),C(1,1)));
-
-Newx=maxx-minx;
-
-maxy=max(max(A(1,2),D(1,2)),max(B(1,2),C(1,2)));
-
-miny=min(min(A(1,2),D(1,2)),min(B(1,2),C(1,2)));
-
-Newy=maxy-miny;
-result = uint8(zeros(round(Newy)+5,round(Newx)+5, L));
-size(result)
-T = [- round(minx), - round(miny),0] ;
-% Apply the translation (pixel by pixel)
-for	y=1:H
-	for x=1:W
-		Q=[y x 1]* Ww;
-		Q=round(Q);
-		Q=Q+T;
-
-		result(Q(1,1) +1, Q(1,2)+1 , :)=image(y ,x,:);
+function result = GeometricTransformation(Image,M)
+[H W L] = size(Image) ;
+RightUpCorner = round(M * [1;W;1]);
+leftUpCorner = round(M * [1;1;1]);
+LeftDownCorner = round(M * [H;1;1]);
+RightDownCorner = round(M * [H;W;1]);
+MinX = min([RightUpCorner(2,1) leftUpCorner(2,1) LeftDownCorner(2,1) RightDownCorner(2,1)]);
+MaxX = max([RightUpCorner(2,1) leftUpCorner(2,1) LeftDownCorner(2,1) RightDownCorner(2,1)]);
+MinY = min([RightUpCorner(1,1) leftUpCorner(1,1) LeftDownCorner(1,1) RightDownCorner(1,1)]);
+MaxY = max([RightUpCorner(1,1) leftUpCorner(1,1) LeftDownCorner(1,1) RightDownCorner(1,1)]);
+NewH = abs(MaxY - MinY);
+NewW = abs(MaxX - MinX);
+result = uint8(zeros(NewH, NewW, L));
+for i=1:H
+    for j=1:W
+        NewPoint = round(M * [i;j;1]) + [-MinY;-MinX;0];
+        if(NewPoint(1,1)<=NewH && NewPoint(1,1)>=1 && NewPoint(2,1)<=NewW && NewPoint(2,1)>=1)
+                result(NewPoint(1,1) , NewPoint(2,1) , :) = Image(i,j,:);
+        end
+    end
 end
 end

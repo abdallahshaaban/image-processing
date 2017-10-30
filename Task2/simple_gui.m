@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 24-Oct-2017 21:46:38
+% Last Modified by GUIDE v2.5 30-Oct-2017 01:41:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -104,6 +104,8 @@ set(handles.btnTranslate, 'Enable', 'on');
 [x1,y1,z1] = size(handles.Image);
 set(handles.txtwidth ,'string',y1);
 set(handles.txthight ,'string',x1);
+set(handles.txtscaleOnX ,'string',y1);
+set(handles.txtscaleOnY ,'string',x1);
 Red = handles.Image(:,:,1);
 [yRed, x] = imhist(Red);
 axes(handles.axes3);
@@ -361,7 +363,7 @@ shx = str2num(txtshxVal) ;
 
 txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
-Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
+Matrix= calculateMatrix(handles.Image,scaleOnX, scaleOnY,rotate,shx,shy);
 handles.Result = GTReverseMapping(handles.Image,Matrix);
 %handles.Result = GTReverseMapping(handles.Image,Matrix);
 
@@ -371,6 +373,26 @@ guidata(hObject, handles);
 % Set current drawing axes to "axes2"
 axes(handles.axes2);
 imshow(handles.Result);
+Red = handles.Result(:,:,1);
+[yRed, x] = imhist(Red);
+axes(handles.axes7);
+plot(x, yRed, 'Red');
+
+Green = handles.Result(:,:,2);
+[yRed, x] = imhist(Green);
+axes(handles.axes8);
+plot(x, yRed, 'Green');
+
+Blue = handles.Result(:,:,3);
+[yRed, x] = imhist(Blue);
+axes(handles.axes9);
+plot(x, yRed, 'Blue');
+
+GrayLevel = GetGrayLevelImage( handles.Result );
+[yRed, x] = imhist(GrayLevel);
+axes(handles.axes10);
+plot(x, yRed, 'Black');
+
 
 function txtwidth_Callback(hObject, eventdata, handles)
 % hObject    handle to txtwidth (see GCBO)
@@ -589,9 +611,9 @@ plot(x, yRed, 'Black');
 
 % --- Executes on button press in btnGamma.
 function btnGamma_Callback(hObject, eventdata, handles)
-txtVal = get(handles.txtGamma, 'String');
-GammaVal = str2num(txtVal) ;
-
+% txtVal = get(handles.txtGamma, 'String');
+% GammaVal = str2num(txtVal) ;
+GammaVal = get(handles.slider1, 'Value');
 % Call the function
 handles.Result = Gamma(handles.Image,GammaVal);
 % Save the handles structure.
@@ -763,11 +785,10 @@ else
 end
 axes(handles.axes2);
 imshow(handles.Result);
-
-
-
 % Save the handles structure.
-guidata(hObject, handles);
+[yRed, x] = imhist(handles.Result);
+axes(handles.axes10);
+plot(x, yRed, 'Black');
 
 
 % --- Executes on button press in btnBorder.
@@ -777,7 +798,12 @@ Border = imread(char(ImageName));
 [H W L] = size(handles.Image);
 Border = imresize(Border,[H W]);
 %Border = ImageThresholding(Border);
-handles.Result = ApplyBorder(handles.Image , Border);
+[H W L] = size(Border);
+if(L==1)
+    handles.Result = ApplyBorder(handles.Image , Border);
+else
+    handles.Result = ApplyColoredBorder(handles.Image , Border);
+end
 axes(handles.axes2);
 imshow(handles.Result);
 % Save the handles structure.
@@ -803,4 +829,27 @@ function txtborder_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on slider movement.
+function slider1_Callback(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+ sliderValue = get(handles.slider1,'Value');
+ set(handles.txtGamma,'String',num2str(sliderValue));
+
+% --- Executes during object creation, after setting all properties.
+function slider1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end

@@ -22,7 +22,7 @@ function varargout = simple_gui(varargin)
 
 % Edit the above text to modify the response to help simple_gui
 
-% Last Modified by GUIDE v2.5 10-Oct-2017 12:54:36
+% Last Modified by GUIDE v2.5 29-Oct-2017 23:34:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -89,7 +89,8 @@ function btnOpenImage_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Open the image and save it in the "handles" struct
-handles.Image = imread('jaguar.bmp');
+ImageName = get(handles.txtopenimage, 'String');
+handles.Image = imread(char(ImageName));
 % Set current drawing axes to "axes1"
 axes(handles.axes1);
 % Display the image
@@ -103,6 +104,8 @@ set(handles.btnTranslate, 'Enable', 'on');
 [x1,y1,z1] = size(handles.Image);
 set(handles.txtwidth ,'string',y1);
 set(handles.txthight ,'string',x1);
+set(handles.txtscaleOnX ,'string',y1);
+set(handles.txtscaleOnY ,'string',x1);
 Red = handles.Image(:,:,1);
 [yRed, x] = imhist(Red);
 axes(handles.axes3);
@@ -332,7 +335,7 @@ shx = str2num(txtshxVal) ;
 
 txtshyVal = get(handles.txtshy, 'String');
 shy = str2num(txtshyVal) ;
-Matrix= calculateMatrix(scaleOnX, scaleOnY,rotate,shx,shy);
+Matrix= calculateMatrix(handles.Image,scaleOnX, scaleOnY,rotate,shx,shy);
 handles.Result = GeometricTransformation(handles.Image,Matrix);
 
 % Save the handles structure.
@@ -492,6 +495,36 @@ function txtscaleOnY_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function txtscaleOnY_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to txtscaleOnY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function btnOpenImage_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to btnOpenImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+
+function txtopenimage_Callback(hObject, eventdata, handles)
+% hObject    handle to txtopenimage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txtopenimage as text
+%        str2double(get(hObject,'String')) returns contents of txtopenimage as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txtopenimage_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txtopenimage (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 

@@ -105,9 +105,15 @@ function btnExtractLandmarks_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 txtVal = get(handles.txtShortEdge, 'String');
 Length = str2num(txtVal);
-[H W L] = size(handles.Image) 
- [Endpoints,ShortEdges]=ExtractLandmarks(handles.Image, Length); 
- Img=cat(3,handles.Image,handles.Image,handles.Image);
+[H W L] = size(handles.Image);
+Image = handles.Image;
+if(L==1)
+ [Endpoints,ShortEdges]=ExtractLandmarks(Image, Length);
+else
+ Image = ImageThresholding(rgb2gray(handles.Result));
+ [Endpoints,ShortEdges]=ExtractLandmarks(Image, Length);
+end
+ Img=cat(3,Image,Image,Image);
  
  [H W L] = size(Endpoints) 
  for y=2 : H
@@ -129,7 +135,7 @@ for i=1:H
     Img(CurrI:CurrI+1,CurrJ:CurrJ+1,2) = 0;
     Img(CurrI:1,CurrJ:1,3) = 255;
     while ~(NextI == ShortEdges(i,3) && NextJ == ShortEdges(i,4))
-        [NextCoordinates C] = GetNextCoordinates(handles.Image , [CurrI CurrJ] , [PrevI PrevJ]);
+        [NextCoordinates C] = GetNextCoordinates(Image , [CurrI CurrJ] , [PrevI PrevJ]);
         NextI = NextCoordinates(1,1);
         NextJ = NextCoordinates(1,2);
         Img(NextI:NextI+1,NextJ:NextJ+1,1) = 0;

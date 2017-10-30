@@ -39,6 +39,16 @@ for y=1 : loopy
 		
     end
 end
+% for i = 1 : H
+%     for j = 1 : W
+%         if(InputImage(i,j)==0)
+%             [NextCoordinates C]= GetNextCoordinates(InputImage , [i j] , [i j]);
+%             if(C == 1)
+%                 result1=[result1;i j];
+%             end
+%         end
+%     end
+% end
 Endpoints=result1;
 [H W L] = size(Endpoints);
 %VisitedBefore = int16.empty(0,2);
