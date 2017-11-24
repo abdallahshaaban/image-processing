@@ -4,7 +4,7 @@ function result = Identify_Card_Vendor(Image)
 img = uint8(zeros(H, W, L));
 
 etisalat = 0;
-mobinil = 0;
+mobinil =  0;
 vodafone = 0;
 
 for row=1:H
@@ -20,10 +20,10 @@ for row=1:H
 end
 
 if(etisalat == max(etisalat, max(mobinil, vodafone)))
-	result = 'Etisalat_logo.jpg';
+	result = imread('etisalat.png');
 elseif(mobinil == max(etisalat, max(mobinil, vodafone)))
-	result = 'mobinil_logo.png'
+	result = imread('mobinil.png');
 else
-	result = 'vodafone_logo.jpg';
+	result = imread('vodafone.png');;
 end
 end

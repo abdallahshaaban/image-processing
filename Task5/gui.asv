@@ -115,11 +115,11 @@ function btnIdentify_Callback(hObject, eventdata, handles)
 % hObject    handle to btnIdentify (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[Number,vendor]= RechargeCard(handles.Image) ;
+[handles.result,vendor]= RechargeCard(handles.Image) ;
 % Set current drawing axes to "axes2"
-axes(handles.axes3); % Make axes1 the gca.
-imshow(vendor);
-axes(handles.axes2); % Make axes2 the gca.
-imshow(Number);
+handles.Result = imread(char(vendor));
+axes(handles.axes2);
+% Display the vendor logo
+imshow(handles.result);
 % Save the handles structure.
 guidata(hObject, handles);

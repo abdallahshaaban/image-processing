@@ -1,0 +1,17 @@
+function result = Identify_Card_Vendor(Image)
+
+[H W L] = size(Image);
+I=Image;
+I = rgb2gray(I);
+BW = im2bw(I,0.84);
+BW=imfill(BW,'holes');
+BW = bwareaopen(BW, 900);
+
+bounds = regionprops(BW, 'BoundingBox', 'Area' );
+Regions = sortrows(bounds);
+rectangle('Position',Regions(1).BoundingBox,'edgecolor','g','linewidth',2);
+
+
+result =Image;
+
+end 
