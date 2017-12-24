@@ -31,7 +31,7 @@ end
 sIM=mIM-IM-C;
 bw=im2bw(sIM,0);
 bw=imcomplement(bw);
-BW=imfill(bw,4);
+% BW=imfill(bw,4);
 BW = ordfilt2(bw,2,ones(3,3));
 BW=not(BW);
  

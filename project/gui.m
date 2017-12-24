@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 21-Nov-2017 15:32:16
+% Last Modified by GUIDE v2.5 23-Dec-2017 23:37:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -119,17 +119,69 @@ function btnIdentify_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-vendor= detectDigits(handles.Image) ;
-if(vendor== 1) result = 'biege'
-    elseif(vendor ==2) result = 'black'
-        elseif(vendor ==3) result = 'brown'
-    elseif(vendor ==4) result = 'dack blue'
-elseif(vendor ==0) result = 'light blue'
+[vendor strings] = detectDigits(handles.Image);
+result = '';
+if(vendor== 1) result = 'biege';
+    elseif(vendor ==2) result = 'black';
+        elseif(vendor ==3) result = 'brown';
+    elseif(vendor ==4) result = 'dack blue';
+elseif(vendor ==0) result = 'light blue';
 end
-
+[a b] = size(strings);
+MainStr = zeros(1,0);
+for i=1 : a
+    str = zeros(1,0);
+    for j=1 : b
+        if(strings(i,j) == -2)
+            break;
+        end
+        if(strings(i,j) == 10)
+           str = [str '$'] ;
+        elseif(strings(i,j) == -1)
+            str = [str '.'] ;
+            if(str(1,1) ~= '$')
+                str = ['$' str];
+            end
+        else
+            str = [ str num2str(strings(i,j))];
+        end
+    end
+    [x  y] = size(str);
+    if(y>2 && str(1,1) ~= '$')
+        str = ['$' str];
+    end
+    MainStr = [MainStr str '\n'];
+end
+MainStr = [MainStr result];
+MainStr = compose(MainStr)
+NewStr = splitlines(MainStr);
+set(handles.listbox1, 'str', NewStr);
 % Set current drawing axes to "axes2"
 axes(handles.axes3); % Make axes1 the gca.
 imshow(vendor);
 
 % Save the handles structure.
 guidata(hObject, handles);
+
+
+% --- Executes on selection change in listbox1.
+function listbox1_Callback(hObject, eventdata, handles)
+% hObject    handle to listbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from listbox1
+
+
+% --- Executes during object creation, after setting all properties.
+function listbox1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to listbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
