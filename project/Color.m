@@ -1,4 +1,4 @@
-function result = Color(Image)
+function result = Color(Image , color)
 Image = imresize(Image , [50  50]);
 [H W L] = size(Image);
 img = uint8(zeros(H, W, L));
@@ -26,15 +26,15 @@ for row=1:H
 end
 
 
-if(biege>1000&&biege == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
+if((biege>1000 || color)&&biege == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
 	result =1;
-elseif(black>1000&&black == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
+elseif((black>1000 || color)&&black == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
 	result = 2;
-elseif(brown>1000&&brown == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
+elseif((brown>1000 || color)&&brown == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
 	result = 3;
-elseif(darkblue>1000&&darkblue == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
+elseif((darkblue>1000 || color)&&darkblue == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
 	result = 4;
-elseif(lightblue>900&&lightblue == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
+elseif((lightblue>900 || color)&&lightblue == max(biege, max(black,max(brown,max(darkblue,lightblue)) )))
 	result = 5;
 else result=0;
 end

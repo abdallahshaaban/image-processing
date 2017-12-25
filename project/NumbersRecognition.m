@@ -1,6 +1,6 @@
-function result =  NumbersRecognition( I , Image )
+function result =  NumbersRecognition( I , Image , Generic , Size , Price)
 strings = ones(0,10)*-2; 
-Groups1 = ExtractRegionsOfNumbers(I);
+Groups1 = ExtractRegionsOfNumbers(I , Generic , Size);
 [h w] = size(Groups1);
 
 % Extra code for testing
@@ -10,7 +10,7 @@ str = ones(1,10)*-2;
 a=1;
 for i=1 : h
     Flag = 0;
-    if(i>1 && abs(bounds(Groups1(i-1,l)).BoundingBox(2) - bounds(Groups1(i,1)).BoundingBox(2)) <= bounds(Groups1(i,1)).BoundingBox(4)/4 && abs(bounds(Groups1(i-1,l)).BoundingBox(4) - bounds(Groups1(i,1)).BoundingBox(4))<=10 )
+    if(~Size && i>1 && abs(bounds(Groups1(i-1,l)).BoundingBox(2) - bounds(Groups1(i,1)).BoundingBox(2)) <= bounds(Groups1(i,1)).BoundingBox(4)/4 && abs(bounds(Groups1(i-1,l)).BoundingBox(4) - bounds(Groups1(i,1)).BoundingBox(4))<=10 )
         str(1,a) = -1;
         a = a + 1;
         Flag = 1;
@@ -26,11 +26,17 @@ for i=1 : h
         end
         rectangle('Position',bounds(Groups1(i,j)).BoundingBox,'edgecolor','g','linewidth',2);
         IC=imcrop(I,bounds(Groups1(i,j)).BoundingBox);
-        IC = bwareaopen(IC, 300);
+        t = 50;
+        CC = bwconncomp(IC);
+        while(t<=2000 && CC.NumObjects > 1)
+            IC = bwareaopen(IC, t);
+            CC = bwconncomp(IC);
+            t = t + 50;
+        end
         d = NearestDigit( IC , [0 1 2 3 4 5 6 7 8 9 10]);
-        if(d(1,1) > 3)
+        if(d(1,1) > 2 || CC.NumObjects ~=1)
             continue;
-        elseif(j == 1 && d(1,2) == 10 && a == 1)
+        elseif(j == 1 && d(1,2) == 10 && a == 1 && ~Size)
             str(1,a) = 10;
         elseif(bounds(Groups1(i,j)).MajorAxisLength/bounds(Groups1(i,j)).MinorAxisLength >= 3)
             str(1,a) = 1;

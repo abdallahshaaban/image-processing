@@ -29,6 +29,10 @@ for i=1:h
         if((max(NearHieght,NearWidth)/min(NearHieght,NearWidth))>=1 && (max(NearHieght,NearWidth)/min(NearHieght,NearWidth))<=3 && abs(MainHieght - NearHieght)<=10 && abs(NearY - MainY) <= NearHieght/4  && NearX - MainX>=MainWidth - 10 && NearX - MainX<=MainWidth+10)                                                                        
             NearestRegion(:,i) = [i;j];
             Visited(:,j) = 1;
+        elseif((max(NearHieght,NearWidth)/min(NearHieght,NearWidth))>=1 && (max(NearHieght,NearWidth)/min(NearHieght,NearWidth))<=3 && abs(MainWidth - NearWidth)<=10 && abs(NearX - MainX) <= NearWidth/4  && NearY - MainY>=MainHieght - 10 && NearY - MainY<=MainHieght+10)
+            NearestRegion(:,i) = [i;j];
+            Visited(:,j) = 1;
+            figure,imsho
         end
     end
 end
@@ -69,3 +73,4 @@ for i=1 : h
     end
 end
 end
+

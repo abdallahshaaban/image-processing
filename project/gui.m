@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 23-Dec-2017 23:37:10
+% Last Modified by GUIDE v2.5 25-Dec-2017 04:28:31
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -118,14 +118,17 @@ function btnIdentify_Callback(hObject, eventdata, handles)
 % hObject    handle to btnIdentify (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-[vendor strings] = detectDigits(handles.Image);
+Generic = get(handles.bxGeneric, 'Value');
+Color = get(handles.bxDetectColor, 'Value');
+Size = get(handles.bxRecognizeSize, 'Value');
+Price = get(handles.bxRecognizePrice, 'Value');
+[vendor strings] = detectDigits(handles.Image , Generic , Color , Size , Price);
 result = '';
 if(vendor== 1) result = 'biege';
     elseif(vendor ==2) result = 'black';
         elseif(vendor ==3) result = 'brown';
     elseif(vendor ==4) result = 'dack blue';
-elseif(vendor ==0) result = 'light blue';
+elseif(vendor ==5) result = 'light blue';
 end
 [a b] = size(strings);
 MainStr = zeros(1,0);
@@ -147,7 +150,7 @@ for i=1 : a
         end
     end
     [x  y] = size(str);
-    if(y>2 && str(1,1) ~= '$')
+    if((y>2 || Price)&& str(1,1) ~= '$')
         str = ['$' str];
     end
     MainStr = [MainStr str '\n'];
@@ -185,3 +188,39 @@ function listbox1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in bxGeneric.
+function bxGeneric_Callback(hObject, eventdata, handles)
+% hObject    handle to bxGeneric (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of bxGeneric
+
+
+% --- Executes on button press in bxDetectColor.
+function bxDetectColor_Callback(hObject, eventdata, handles)
+% hObject    handle to bxDetectColor (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of bxDetectColor
+
+
+% --- Executes on button press in bxRecognizeSize.
+function bxRecognizeSize_Callback(hObject, eventdata, handles)
+% hObject    handle to bxRecognizeSize (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of bxRecognizeSize
+
+
+% --- Executes on button press in bxRecognizePrice.
+function bxRecognizePrice_Callback(hObject, eventdata, handles)
+% hObject    handle to bxRecognizePrice (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of bxRecognizePrice
