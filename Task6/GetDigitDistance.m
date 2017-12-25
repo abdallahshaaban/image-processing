@@ -7,7 +7,9 @@ I = imfill(I,'holes');
 SE = strel('square',5);
 I = imerode(I , SE);
 M = imerode(Image,strel(I));
-%figure , imshow(I);
+[a b] = size(M);
+M = M(70:a-70,50:b-50);
+%figure , imshow(M);
 M = sum(M);
 flag = 0;
 for i=1 : length(M)
