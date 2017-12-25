@@ -4,13 +4,13 @@ Vendor=Identify_Card_Vendor(Image);
 I=Image;
 I = rgb2gray(I);
 BW = im2bw(I,0.84);
-figure , imshow(BW);
+%figure , imshow(BW);
 BW=imfill(BW,'holes');
 
-figure , imshow(BW);
+%figure , imshow(BW);
 BW = bwareaopen(BW, 900);
 
-figure , imshow(BW);
+%figure , imshow(BW);
 Regions = regionprops(BW, 'BoundingBox', 'Area' );
 
 if( Regions(1).Area < Regions(2).Area)

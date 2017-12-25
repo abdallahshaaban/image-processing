@@ -119,7 +119,11 @@ function btnIdentify_Callback(hObject, eventdata, handles)
 % Set current drawing axes to "axes2"
 axes(handles.axes3); % Make axes1 the gca.
 imshow(vendor);
+result = detectDigits(vendor);
+axes(handles.axes7); % Make axes2 the gca.
+imshow(result);
 axes(handles.axes2); % Make axes2 the gca.
 imshow(Number);
+
 % Save the handles structure.
 guidata(hObject, handles);
