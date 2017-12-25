@@ -10,7 +10,7 @@ str = ones(1,10)*-2;
 a=1;
 for i=1 : h
     Flag = 0;
-    if(~Size && i>1 && abs(bounds(Groups1(i-1,l)).BoundingBox(2) - bounds(Groups1(i,1)).BoundingBox(2)) <= bounds(Groups1(i,1)).BoundingBox(4)/4 && abs(bounds(Groups1(i-1,l)).BoundingBox(4) - bounds(Groups1(i,1)).BoundingBox(4))<=10 )
+    if(~Size && i>1 && abs(bounds(Groups1(i-1,l)).BoundingBox(2) - bounds(Groups1(i,1)).BoundingBox(2)) <= bounds(Groups1(i,1)).BoundingBox(4)/4 && abs(bounds(Groups1(i-1,l)).BoundingBox(4) - bounds(Groups1(i,1)).BoundingBox(4))<=10 && bounds(Groups1(i,1)).BoundingBox(1) - bounds(Groups1(i-1,l)).BoundingBox(1)>0 && bounds(Groups1(i,1)).BoundingBox(1) - bounds(Groups1(i-1,l)).BoundingBox(1)<150 )
         str(1,a) = -1;
         a = a + 1;
         Flag = 1;
